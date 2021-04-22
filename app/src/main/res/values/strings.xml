@@ -3,5 +3,8 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
+    <string name="loginTxt">Silakan login ke akun Anda</string>
+    <string name="registerTxt">Tidak punya akun?</string>
+    <string name="atau">atau</string>
 </resources>
