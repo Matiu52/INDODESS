@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 }*/
 
+import android.content.Intent;
 import android.os.Bundle;
         import android.text.TextUtils;
         import android.util.Log;
@@ -41,11 +42,11 @@ import android.os.Bundle;
         import com.google.firebase.database.FirebaseDatabase;
         import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private EditText inputUsername, inputPassword;
-    private Button btnLogin;
+    private Button btnLogin, btnRegister;
     private DatabaseReference mFirebaseDatabase;
 
     private String userId;
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         inputUsername = findViewById(R.id.username);
         inputPassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btn_login);
+        btnRegister = findViewById(R.id.btn_register);
+
+        btnRegister.setOnClickListener(this);
 
         FirebaseDatabase mFirebaseInstance = FirebaseDatabase.getInstance();
 
@@ -160,5 +164,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(password))
             mFirebaseDatabase.child(userId).child("email").setValue(password);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_register:
+                startActivity(new Intent(this,RegisterUser.class));
+                break;
+        }
     }
 }
