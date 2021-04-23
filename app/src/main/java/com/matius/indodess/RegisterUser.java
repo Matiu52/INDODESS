@@ -35,7 +35,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
 
-        banner = (TextView) findViewById(R.id.banner);
+        banner = (TextView) findViewById(R.id.bannerRegister);
         banner.setOnClickListener(this);
 
         registerUser = (Button) findViewById(R.id.registerUser);
@@ -49,7 +49,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.banner:
+            case R.id.bannerRegister:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.registerUser:
@@ -89,9 +89,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(username, email);
+                            User user = new User(username, email, password);
 
-                            FirebaseDatabase.getInstance().getReference("Users")
+                            FirebaseDatabase.getInstance().getReference("users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
