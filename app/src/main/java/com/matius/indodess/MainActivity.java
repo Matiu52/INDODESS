@@ -1,30 +1,6 @@
 package com.matius.indodess;
 
-/*import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-}*/
-
+import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.os.Bundle;
         import android.text.TextUtils;
@@ -33,10 +9,16 @@ import android.os.Bundle;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
+import android.widget.Toast;
 
-        import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-        import com.google.firebase.database.DataSnapshot;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
@@ -62,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRegister = findViewById(R.id.btn_register);
 
         btnRegister.setOnClickListener(this);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         FirebaseDatabase mFirebaseInstance = FirebaseDatabase.getInstance();
 
@@ -94,76 +78,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = inputUsername.getText().toString();
-                String password = inputPassword.getText().toString();
+                String usernameIn = inputUsername.getText().toString();
+                String passwordIn = inputPassword.getText().toString();
 
-                // Check for already existed userId
-                if (TextUtils.isEmpty(userId)) {
-                    createUser(username, password);
-                } else {
-                    updateUser(username, password);
+                if (TextUtils.isEmpty(usernameIn) ||
+                        TextUtils.isEmpty(passwordIn)) {
+                    Toast.makeText(MainActivity.this, "Masih ada field yang kosong!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String id = mAuth.getCurrentUser().getUid();
+                    DatabaseReference idRef = mFirebaseDatabase.child(id);
+
+                    idRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            String username = dataSnapshot.child("username").getValue().toString();
+                            String password = dataSnapshot.child("password").getValue().toString();
+
+                            if (usernameIn.equals(username) && passwordIn.equals(password)) {
+                                Toast.makeText(MainActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                            } else if (!usernameIn.equals(username) || !passwordIn.equals(password)) {
+                                Toast.makeText(MainActivity.this, "username atau password tidak cocok!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         });
-    }
-
-    /**
-     * Creating new user node under 'users'
-     */
-    private void createUser(String username, String password) {
-        // TODO
-        // In real apps this userId should be fetched
-        // by implementing firebase auth
-        if (TextUtils.isEmpty(userId)) {
-            userId = mFirebaseDatabase.push().getKey();
-        }
-
-        User user = new User(username, password);
-
-        mFirebaseDatabase.child(userId).setValue(user);
-
-        addUserChangeListener();
-    }
-
-    /**
-     * User data change listener
-     */
-    private void addUserChangeListener() {
-        // User data change listener
-        mFirebaseDatabase.child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-
-                // Check for null
-                if (user == null) {
-                    Log.e(TAG, "User data is null!");
-                    return;
-                }
-
-                Log.e(TAG, "User data is changed!" + user.getUsername() + ", " + user.getPassword());
-
-
-                // clear edit text
-                inputUsername.setText("");
-                inputPassword.setText("");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e(TAG, "Failed to read user", error.toException());
-            }
-        });
-    }
-
-    private void updateUser(String username, String password) {
-        // updating the user via child nodes
-        if (!TextUtils.isEmpty(username))
-            mFirebaseDatabase.child(userId).child("name").setValue(username);
-
-        if (!TextUtils.isEmpty(password))
-            mFirebaseDatabase.child(userId).child("email").setValue(password);
     }
 
     @Override
