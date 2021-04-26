@@ -1,8 +1,5 @@
 package com.matius.indodess;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -12,13 +9,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.regex.Pattern;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,7 +33,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
 
-        banner = (TextView) findViewById(R.id.banner);
+        banner = (TextView) findViewById(R.id.bannerRegister);
         banner.setOnClickListener(this);
 
         registerUser = (Button) findViewById(R.id.registerUser);
@@ -49,7 +47,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.banner:
+            case R.id.bannerRegister:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.registerUser:
@@ -82,6 +80,11 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             etpassword.requestFocus();
             return;
         }
+        if(password.length() < 6){
+            etpassword.setError("Password harus lebih dari 6 karakter !");
+            etpassword.requestFocus();
+            return;
+        }
 
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -89,9 +92,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(username, email);
+                            User user = new User(username, email, password);
 
-                            FirebaseDatabase.getInstance().getReference("Users")
+                            FirebaseDatabase.getInstance().getReference("users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -100,6 +103,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                     if(task.isSuccessful()){
                                         Toast.makeText(RegisterUser.this, "Berhasil melakukan register!",
                                                 Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(RegisterUser.this, MainActivity.class));
                                     } else{
                                         Toast.makeText(RegisterUser.this, "Registrasi gagal dilakukan!",
                                                 Toast.LENGTH_LONG).show();

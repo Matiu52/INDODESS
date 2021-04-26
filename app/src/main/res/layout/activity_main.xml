@@ -8,15 +8,27 @@
     tools:context="com.matius.indodess.MainActivity">
 
     <TextView
+        android:id="@+id/bannerLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textSize="35sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        />
+
+    <TextView
         android:id="@+id/txt_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/loginTxt"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="8pt"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"/>
+        android:textSize="20sp"
+        android:layout_below="@+id/bannerLogin"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,18 +38,19 @@
 
         <EditText
             android:id="@+id/username"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/username"
             android:autofillHints="@string/username"
             android:textAlignment="center"
             android:layout_gravity="center"
             android:inputType="text"
+            android:layout_marginTop="20dp"
             android:maxLines="1"/>
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:autofillHints="@string/password"
@@ -45,6 +58,7 @@
             android:layout_gravity="center"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"/>
 
@@ -52,9 +66,9 @@
             android:id="@+id/btn_login"
             style="?android:textAppearanceSmall"
             android:textAllCaps="false"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:backgroundTint="@android:color/holo_blue_light"
             android:text="@string/login"
@@ -70,13 +84,13 @@
             android:layout_gravity="center"
             android:textAllCaps="true"
             android:textSize="8pt"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
 
         <Button
             android:id="@+id/btn_register"
             style="?android:textAppearanceSmall"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:textAllCaps="false"
             android:layout_gravity="center"
