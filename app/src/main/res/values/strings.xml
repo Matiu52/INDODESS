@@ -26,11 +26,5 @@
     <string name="indodess">INDODESS</string>
     <string name="inputEmail">Masukkan Email</string>
     <string name="reset">RESET</string>
-    <string name="resetPassword">Lupa Password</string>
-    <string name="txtViewSaldo">Jumlah saldo Anda:</string>
-    <string name="nullSaldo">null</string>
-    <string name="buy">buy</string>
-    <string name="sell">sell</string>
-    <string name="price">1 koin = Rp. 1000,00</string>
-    <string name="jmlBuy">jumlah Beli</string>
+    <string name="resetPassword">Lupa Password ?</string>
 </resources>
