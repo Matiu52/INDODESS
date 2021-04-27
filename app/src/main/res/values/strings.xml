@@ -16,9 +16,15 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Logout</string>
 
     <string name="menu_home">Profil</string>
     <string name="menu_gallery">Market</string>
     <string name="menu_slideshow">Transaksi</string>
+    <string name="menu_news">Berita</string>
+    <string name="menu_policy">Kebijakan Privasi</string>
+    <string name="indodess">INDODESS</string>
+    <string name="inputEmail">Masukkan Email</string>
+    <string name="reset">RESET</string>
+    <string name="resetPassword">Lupa Password</string>
 </resources>

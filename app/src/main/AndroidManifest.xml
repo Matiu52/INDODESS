@@ -11,6 +11,7 @@
         android:theme="@style/Theme.INDODESS">
         <activity android:name=".HomeActivity" android:theme="@style/Theme.INDODESS.NoActionBar"/>
         <activity android:name=".RegisterUser" />
+        <activity android:name=".ForgotPassword"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

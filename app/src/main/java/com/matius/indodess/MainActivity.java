@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = MainActivity.class.getSimpleName();
     private EditText inputUsername, inputPassword;
     private Button btnLogin, btnRegister;
+    private  TextView forgotPassword;
     private DatabaseReference mFirebaseDatabase;
 
     private String userId;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inputPassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_register);
+        forgotPassword = findViewById(R.id.resetPassword);
+        forgotPassword.setOnClickListener(this);
 
         btnRegister.setOnClickListener(this);
 
@@ -96,10 +99,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             String username = dataSnapshot.child("username").getValue().toString();
                             String password = dataSnapshot.child("password").getValue().toString();
+                            String email = dataSnapshot.child("email").getValue().toString();
 
                             if (usernameIn.equals(username) && passwordIn.equals(password)) {
+                                inputUsername.setText("");
+                                inputPassword.setText("");
                                 Toast.makeText(MainActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                intent.putExtra("username", username);
+                                intent.putExtra("email", email);
+                                startActivity(intent);
                             } else if (!usernameIn.equals(username) || !passwordIn.equals(password)) {
                                 Toast.makeText(MainActivity.this, "username atau password tidak cocok!", Toast.LENGTH_SHORT).show();
                             }
@@ -120,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.btn_register:
                 startActivity(new Intent(this,RegisterUser.class));
+                break;
+            case R.id.resetPassword:
+                startActivity(new Intent(this, ForgotPassword.class));
                 break;
         }
     }
