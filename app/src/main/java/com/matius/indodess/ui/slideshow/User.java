@@ -1,4 +1,4 @@
-package com.matius.indodess;
+package com.matius.indodess.ui.slideshow;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
