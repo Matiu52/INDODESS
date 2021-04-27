@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_all_crypto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="#000000">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,8 +12,6 @@
         android:orientation="vertical"
         android:layout_marginBottom="16dp">
 
-
         <include layout="@layout/list" />
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

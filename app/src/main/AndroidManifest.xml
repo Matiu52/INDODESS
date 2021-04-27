@@ -22,6 +22,8 @@
             android:theme="@style/Theme.INDODESS.NoActionBar" />
         <activity android:name=".RegisterUser" />
         <activity android:name=".ForgotPassword" />
+        <activity android:name=".ui.slideshow.BuyActivity"/>
+        <activity android:name=".ui.slideshow.SellActivity"/>
         <activity android:name=".MainActivity">
 
         </activity>

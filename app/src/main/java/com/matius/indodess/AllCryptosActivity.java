@@ -1,19 +1,20 @@
-package com.matius.indodess.ui.gallery;
+package com.matius.indodess;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,55 +22,39 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.matius.indodess.Currency;
-import com.matius.indodess.CurrencyAdapter;
-import com.matius.indodess.R;
-
-public class GalleryFragment extends Fragment {
-
-    String BASE_URL = "https://min-api.cryptocompare.com";
-    String IMAGE_URL = "https://www.cryptocompare.com";
+public class AllCryptosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private CurrencyAdapter adapter;
+    private com.matius.indodess.AllCryptoAdapter adapter;
     private List<Currency> currencyList;
 
-    private GalleryViewModel galleryViewModel;
+    ArrayList<String> names = new ArrayList<>();
+    String BASE_URL = "https://min-api.cryptocompare.com";
+    String IMAGE_URL= "https://www.cryptocompare.com";
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        recyclerView = root.findViewById(R.id.recycler_view);
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_crypto);
+        recyclerView = findViewById(R.id.recycler_view);
 
         currencyList = new ArrayList<>();
-        adapter = new CurrencyAdapter(getContext(), currencyList);
+        adapter = new com.matius.indodess.AllCryptoAdapter(this, currencyList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        String url = BASE_URL + "/data/top/totalvolfull?limit=10&tsym=USD";
+        String url = BASE_URL + "/data/top/totalvolfull?limit=20&tsym=USD";
         prepareCurrencies(url);
-        return root;
+
     }
 
     private void prepareCurrencies(String url) {
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -77,16 +62,18 @@ public class GalleryFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray js = response.getJSONArray("Data");
-                    for (int i = 0; i < js.length(); i++) {
+                    for (int i=0; i < js.length(); i++) {
                         JSONObject display = js.getJSONObject(i).getJSONObject("DISPLAY").getJSONObject("USD");
                         String image = IMAGE_URL + display.getString("IMAGEURL");
                         JSONObject coinInfo = js.getJSONObject(i).getJSONObject("CoinInfo");
+                        names.add(coinInfo.getString("FullName"));
 
                         Currency c = new Currency(coinInfo.getString("FullName"), coinInfo.getString("Name"), display.getString("PRICE"),
                                 display.getString("LOWDAY"), display.getString("HIGHDAY"),
                                 display.getString("OPENDAY"), image, coinInfo.getString("Algorithm"));
                         currencyList.add(c);
 
+                        Log.i("nnnn: ", ""+i );
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -104,4 +91,5 @@ public class GalleryFragment extends Fragment {
         queue.add(jsObjRequest);
 
     }
+
 }
